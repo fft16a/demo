@@ -23,7 +23,6 @@ class Login: UIViewController
 
     @IBOutlet weak var m_pTFPassword: UITextField!
     
-    @IBOutlet weak var m_pBtnAutoLogin: UISwitch!
     //MARK:- IBAction
     
     
@@ -61,11 +60,7 @@ class Login: UIViewController
 
         Alamofire.request(strApiUrl, method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: nil)
             .responseJSON { response in
-//                print(response.request as Any)  // original URL request
-//                print(response.response as Any) // URL response
-                print(response.result.value as Any)   // result of response serialization
-                
-                
+
                 if let dic:[String:Any]  = response.result.value as! [String:Any]?
                 {
                     if let tokenDic:[String:Any] = (dic["token"] as? [String:Any])

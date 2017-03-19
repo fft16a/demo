@@ -29,6 +29,10 @@ class MemberListVC: UIViewController
         super.viewWillAppear(animated)
         self.navigationController?.setNavigationBarHidden(true, animated: false);
 
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        appDelegate.silentLogin()
+        
+        
     }
     
     override var prefersStatusBarHidden : Bool

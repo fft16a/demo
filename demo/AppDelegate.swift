@@ -8,12 +8,13 @@
 
 import UIKit
 import SlideMenuControllerSwift
+import Alamofire
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-
+    var m_bIsUpdating = false;
     
     fileprivate func createMenuView() {
         
@@ -58,14 +59,91 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Called as part of the transition from the background to the active state; here you can undo many of the changes made on entering the background.
     }
 
-    func applicationDidBecomeActive(_ application: UIApplication) {
+    func applicationDidBecomeActive(_ application: UIApplication)
+    {
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+        
+        self.silentLogin()
     }
 
     func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
 
+    func silentLogin() -> Void
+    {
+        if self.m_bIsUpdating
+        {
+            //still in update status
+            print("still updating")
+            return
+        }
+        
+        if let data = UserDefaults.standard.data(forKey: "account"),
+            let myAccountList = NSKeyedUnarchiver.unarchiveObject(with: data) as? [Account]
+        {
+            let account:Account = myAccountList[0]
+            
+            
+            //current timestamp
+            let dTimeStamp:Double = NSDate().timeIntervalSince1970
+            //print("current : \(dTimeStamp)")
+            
+            
+            let diff = account.m_dExp - dTimeStamp
+            
+            //剩不到五分鐘
+            if  diff < ( 300 )
+            {
+                print("剩不到五分鐘")
+                //need update
+                m_bIsUpdating = true
+                
+                let strServer = Constants.API_SERVER
+                let strModule = ""
+                let strFormat = "%@%@"
+                
+                let parameters: Parameters = ["name":account.m_pUserName, "pwd":account.m_pUserPassword]
+                
+                let strApiUrl:String = String.init(format: strFormat, locale: nil,  strServer, strModule)
+                
+                Alamofire.request(strApiUrl, method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: nil)
+                    .responseJSON { response in
+                        
+                        self.m_bIsUpdating = false
+                        if let dic:[String:Any]  = response.result.value as! [String:Any]?
+                        {
+                            if let tokenDic:[String:Any] = (dic["token"] as? [String:Any])
+                            {
+                                print("tokenDic : \(tokenDic)")
+                                
+                                //save data
+                                
+                                let exp:Double = tokenDic["exp"] as! Double
+                                let token:String = tokenDic["token"] as! String
+                                
+                                let newAccount:Account = Account.init(name: account.m_pUserName, password: account.m_pUserPassword, exp: exp, token: token)
+                                var account = [Account]()
+                                account.append(newAccount)
+                                let encodedData = NSKeyedArchiver.archivedData(withRootObject: account)
+                                UserDefaults.standard.set(encodedData, forKey: "account")
+                
+                            }
+                            else
+                            {
+                                //login error
+                            }
+                        }
+                        
+                }
+
+                
+                
+            }
+        }
+
+        
+    }
 
 }
 

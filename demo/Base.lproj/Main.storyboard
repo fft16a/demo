@@ -183,22 +183,10 @@
                                     <action selector="pressLogin:" destination="g7a-g4-rwI" eventType="touchUpInside" id="i1D-EM-RqC"/>
                                 </connections>
                             </button>
-                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="P2b-dg-5bj">
-                                <rect key="frame" x="16" y="371" width="51" height="31"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            </switch>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="auto login" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mxt-x0-nMy">
-                                <rect key="frame" x="81" y="375" width="76" height="21"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <connections>
-                        <outlet property="m_pBtnAutoLogin" destination="P2b-dg-5bj" id="3F8-1T-pjy"/>
                         <outlet property="m_pTFName" destination="LAa-U1-5Ds" id="deM-L8-Ka4"/>
                         <outlet property="m_pTFPassword" destination="NwI-EZ-M8k" id="WD3-O1-VKX"/>
                     </connections>

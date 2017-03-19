@@ -31,8 +31,12 @@ class ViewController: UIViewController {
         
 
         if let data = UserDefaults.standard.data(forKey: "account"),
-            let myAccountList = NSKeyedUnarchiver.unarchiveObject(with: data) as? [Account] {
-            myAccountList.forEach({print( $0.m_pUserName, $0.m_pUserPassword, $0.m_dExp, $0.m_pToken)})
+            let myAccountList = NSKeyedUnarchiver.unarchiveObject(with: data) as? [Account]
+        {
+            //myAccountList.forEach({print( $0.m_pUserName, $0.m_pUserPassword, $0.m_dExp, $0.m_pToken)})
+            
+            let appDelegate = UIApplication.shared.delegate as! AppDelegate
+            appDelegate.silentLogin()
         }
         else
         {
